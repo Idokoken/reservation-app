@@ -4,7 +4,11 @@ import IndexPage from "./pages/IndexPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import AccountPage from "./pages/AcountPage";
+import SharedProfileLayout from "./pages/SharedProfileLayout";
+import PlacesPage from "./pages/PlacesPage";
+import BookingsPage from "./pages/BookingsPage";
 import Layout from "./Layout";
+import AddNewPlaces from "./pages/AddNewPlaces";
 
 function App() {
   return (
@@ -14,7 +18,12 @@ function App() {
           <Route Index element={<IndexPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/account/:subpage?" element={<AccountPage />} />
+          <Route path="/account" element={<SharedProfileLayout />}>
+            <Route index element={<AccountPage />} />
+            <Route path="places" element={<PlacesPage />} />
+            <Route path="bookings" element={<BookingsPage />} />
+          </Route>
+          <Route path="/account/places/new" element={<AddNewPlaces />}></Route>
         </Route>
       </Routes>
       <Footer />
