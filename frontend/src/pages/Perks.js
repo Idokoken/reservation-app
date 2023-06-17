@@ -16,32 +16,62 @@ function Perks({ perks, setPerks }) {
       <p>Select all Perks</p>
       <div className="perks">
         <label className="perk-item">
-          <input type="checkbox" name="wifi" onChange={handleCBClick} />
+          <input
+            type="checkbox"
+            checked={perks.includes("wifi")}
+            name="wifi"
+            onChange={handleCBClick}
+          />
           <i className="fa-solid fa-wifi icon"></i>
           <span>Wifi</span>
         </label>
         <label className="perk-item">
-          <input type="checkbox" name="parking" onChange={handleCBClick} />
+          <input
+            type="checkbox"
+            checked={perks.includes("parking")}
+            name="parking"
+            onChange={handleCBClick}
+          />
           <i className="fa-soild fa-car icon"></i>
           <span>free parking spot</span>
         </label>
         <label className="perk-item">
-          <input type="checkbox" name="tv" onChange={handleCBClick} />
+          <input
+            type="checkbox"
+            checked={perks.includes("tv")}
+            name="tv"
+            onChange={handleCBClick}
+          />
           <i className="fa-solid fa-tv icon"></i>
           <span>TV</span>
         </label>
         <label className="perk-item">
-          <input type="checkbox" name="radio" onChange={handleCBClick} />
+          <input
+            type="checkbox"
+            checked={perks.includes("radio")}
+            name="radio"
+            onChange={handleCBClick}
+          />
           <i className="fa-soild fa-signal icon"></i>
           <span>Radio</span>
         </label>
         <label className="perk-item">
-          <input type="checkbox" name="pets" onChange={handleCBClick} />
+          <input
+            type="checkbox"
+            checked={perks.includes("pets")}
+            name="pets"
+            onChange={handleCBClick}
+          />
           <i className="fa fa-thumbs-up icon"></i>
           <span>Pets</span>
         </label>
         <label className="perk-item">
-          <input type="checkbox" name="entrance" onChange={handleCBClick} />
+          <input
+            type="checkbox"
+            checked={perks.includes("entrance")}
+            name="entrance"
+            onChange={handleCBClick}
+          />
           <i className="fa-solid fa-arrow-right icon"></i>
           <span>Private entrance</span>
         </label>

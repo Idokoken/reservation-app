@@ -49,13 +49,40 @@ function Header() {
               </li>
             </ul>
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <NavLink className="nav-link" to={user ? "/account" : "/login"}>
-                  <i className="fa-solid fa-bars me-1"></i>
-                  <i className="fa fa-user me-1"></i>
-                  {user && <div>{user.name}</div>}
-                </NavLink>
-              </li>
+              {user && (
+                <>
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link"
+                      to={user ? "/account" : "/login"}
+                    >
+                      <i className="fa-solid fa-bars me-1"></i>
+                      <i className="fa fa-user me-1"></i>
+                      {user && <div>{user.name}</div>}
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/logout">
+                      logout
+                    </NavLink>
+                  </li>
+                </>
+              )}
+
+              {!user && (
+                <>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/register">
+                      Register
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/login">
+                      Login
+                    </NavLink>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

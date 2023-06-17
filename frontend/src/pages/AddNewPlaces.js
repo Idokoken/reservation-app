@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Tablet } from "../Responsive";
 import Perks from "./Perks";
@@ -51,25 +51,64 @@ function AddNewPlaces() {
   const [checkOut, setCheckOut] = useState("");
   const [maxGuest, setMaxGuest] = useState(1);
 
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const getOnePlace = async () => {
+    try {
+      const { data } = await axios.get("/places/" + id);
+      // console.log(data);
+
+      setTitle(data.title);
+      setAddress(data.address);
+      setPhotos(data.photos);
+      setDescription(data.description);
+      setPerks(data.perks);
+      setCheckIn(data.checkIn);
+      setCheckOut(data.checkOut);
+      setMaxGuest(data.maxGuest);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    getOnePlace();
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post("/places", {
-        title,
-        address,
-        photos,
-        description,
-        perks,
-        checkIn,
-        checkOut,
-        maxGuest,
-      });
-      //   console.log(resp.data);
-      navigate("/account/places");
-    } catch (error) {
-      console.log(error);
+    const setPlaces = {
+      title,
+      address,
+      photos,
+      description,
+      perks,
+      checkIn,
+      checkOut,
+      maxGuest,
+    };
+    if (id) {
+      try {
+        await axios.put("/places", {
+          id,
+          ...setPlaces,
+        });
+        //   console.log(resp.data);
+        navigate("/account/places");
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await axios.post("/places", setPlaces);
+        //   console.log(resp.data);
+        navigate("/account/places");
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const download = require("image-downloader");
 const User = require("./models/userModel");
+const Places = require("./models/placeModel");
 const userRouter = require("./routes/userRouter");
 const placesRouter = require("./routes/placesRouter");
 const multer = require("multer");
@@ -92,6 +93,28 @@ app.post("/upload", upload.array("photos", 100), (req, res) => {
   // console.log(uploadedFiles);
   res.json(uploadedFiles);
 });
+// app.put("/places", async (req, res) => {
+//   const {
+//     id,
+//     title,
+//     address,
+//     photos,
+//     description,
+//     perks,
+//     checkIn,
+//     checkOut,
+//     maxGuest,
+//   } = req.body;
+//   const { token } = req.cookies;
+
+//   // jwt.verify(token, process.env.JWT_SECRET, {}, async (err, userData) => {
+//   //   if (err) throw err;
+//   const placesDoc = await Places.findById(id);
+//   console.log(token);
+//   console.log(placesDoc.owner);
+//   // });
+// });
+
 app.use("/auth", userRouter);
 app.use("/places", placesRouter);
 

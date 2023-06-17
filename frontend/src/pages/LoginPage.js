@@ -85,12 +85,16 @@ const Wrapper = styled.div`
 `;
 
 const LoginPage = () => {
+  // const location = useLocation();
+  // const {message} = location.state;
   const navigate = useNavigate();
+
+  const [error, setError] = useState("");
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
-  const { setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,25 +104,28 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = values;
-    if (!email || !password) {
-      console.log("enter all fields");
-    }
     try {
       const resp = await axios.post(
         "/auth/login",
         { email, password },
         { withCredentials: true }
       );
-      setUser(resp.data);
-      alert("login successful");
-      navigate("/");
+      setValues(resp.data);
+      window.location = "/";
+      // navigate("/");
       console.log(resp.data);
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.status === 400) {
+        setError(error.response.data);
+      }
+      console.log(error.message);
     }
   };
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (user) {
+      navigate(-1);
+    }
+  }, []);
 
   return (
     <Wrapper>
@@ -130,6 +137,10 @@ const LoginPage = () => {
         <h2>User Login</h2>
 
         <form onSubmit={handleSubmit}>
+          {/* {message !== "" && (
+            <span className="alert alert-success">{message}</span>
+          )} */}
+          {error !== "" && <span className="alert alert-danger">{error}</span>}
           <input
             type="email"
             name="email"

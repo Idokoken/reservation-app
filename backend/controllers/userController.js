@@ -9,11 +9,14 @@ exports.registerUser = async (req, res) => {
   let salt = bcrypt.genSaltSync(10);
   let hashedPassword = bcrypt.hashSync(password, salt);
   try {
+    const check = await User.findOne({ email });
+    if (check) return res.status(400).send("email already in use");
+
     const user = await new User({ name, email, password: hashedPassword });
     const newUser = await user.save();
     res.status(200).json(newUser);
   } catch (error) {
-    console.log(error);
+    res.status(500).json(error);
   }
 };
 
@@ -22,11 +25,11 @@ exports.loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      res.json({ msg: "invalid cridentials" });
+      res.status(400).json("invalid cridentials");
     }
     const userPassword = await bcrypt.compare(password, user.password);
     if (!userPassword) {
-      res.json({ msg: "invalid cridentials" });
+      res.status(400).json("invalid cridentials");
     }
     const token = await jwt.sign(
       { id: user._id, email: user.email },
@@ -36,7 +39,6 @@ exports.loginUser = async (req, res) => {
       }
     );
     res.cookie("token", token).json(user);
-    //res.send("cookie sent");
     // res.status(200).json({ user, token });
   } catch (error) {
     res.status(500).json(error);

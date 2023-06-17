@@ -85,7 +85,7 @@ const Wrapper = styled.div`
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-
+  const [error, setError] = useState("");
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -100,23 +100,23 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password } = values;
-    if (!name || !email || !password) {
-      console.log("enter all fields");
-    }
     try {
-      const resp = await axios.post("/auth/register", {
+      await axios.post("/auth/register", {
         name,
         email,
         password,
       });
-      console.log(resp.data);
+      // console.log(resp.data);
+      // navigate("/login", {
+      //   state: { message: "account successfully created, login now" },
+      // });
+      navigate("/login");
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.status === 400) {
+        setError(error.response.data);
+      }
+      console.log(error.message);
     }
-    // const user = { name, email, password };
-    // console.log(user);
-
-    // navigate("/");
   };
 
   useEffect(() => {}, []);
@@ -130,6 +130,8 @@ const RegisterPage = () => {
         <h2>Register</h2>
 
         <form onSubmit={handleSubmit}>
+          {error !== "" && <span className="alert alert-danger">{error}</span>}
+
           <input
             type="text"
             name="name"
